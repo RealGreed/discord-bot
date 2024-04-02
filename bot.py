@@ -18,15 +18,20 @@ async def meeting_message():
 async def on_ready():
 	print(f"Loggined in as: {bot.user.name}")
 	now = datetime.datetime.now()
-	reminder_time = now.replace(hour=22, minute=8)
-	meeting_time = now.replace(hour=22, minute=10)
+
+	# only runs on wednesdays
+	if now.weekday() != 2:
+		return
 	
-	if now < reminder_time:
-		await meeting_reminder()
-	elif reminder_time <= now < meeting_time:
+	reminder_time = now.replace(hour=20, minute=30)
+	meeting_time = now.replace(hour=21, minute=0)
+	
+	if now >= meeting_time:
+		await meeting_message()
+	elif now >= reminder_time:
 		await meeting_message()
 	else:
-		print("Meeting time has passed.")
+		return
 
 if __name__ == '__main__':
 	bot.run(os.environ["DISCORD_TOKEN"])
