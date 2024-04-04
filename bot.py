@@ -16,19 +16,26 @@ async def meeting_message():
 
 async def check_time_and_send_messages():
     while True:
+        print("Checking time...")
         now = datetime.datetime.now()
+        print("Current time:", now)
 
         # only runs on Wednesdays
         if now.weekday() == 2:
             reminder_time = now.replace(hour=20, minute=30)
-            meeting_time = now.replace(hour=21, minute=0)
+            meeting_time = now.replace(hour=21, minute=00)
+            print("Reminder time: ", reminder_time)
+            print("Meeting time: ", meeting_time)
             
             if now >= meeting_time:
+                print("Sending meeting message...")
                 await meeting_message()
             elif now >= reminder_time:
+                print("Sending meeting reminder...")
                 await meeting_reminder()
 
         # Sleep for 1 hour before checking again
+        print("Sleeping for 1 hour...")
         await asyncio.sleep(3600)  # 3600 seconds = 1 hour
 
 @bot.event
