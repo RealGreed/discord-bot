@@ -37,8 +37,8 @@ async def check_time_and_send_messages():
                 await meeting_reminder()
 
         # Sleep for 1 hour before checking again
-        print("Sleeping for 1 hour...")
-        await asyncio.sleep(3600)  # 3600 seconds = 1 hour
+        print("Sleeping for 25 minutes...")
+        await asyncio.sleep(900)  # 3600 seconds = 1 hour
 
 @bot.event
 async def on_ready():
