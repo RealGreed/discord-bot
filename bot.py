@@ -17,28 +17,32 @@ async def meeting_message():
 
 async def check_time_and_send_messages():
     cst = pytz.timezone('America/Chicago')  # Central Standard Time
+    reminder_sent = False  # Variable to track if reminder has been sent for the day
+    meeting_sent = False # Variable to track if meeting has been sent for the day
     while True:
         print("Checking time...")
         now = datetime.datetime.now(cst)
-        print("Current time:", now)
+        print("Current time (CST):", now)
 
-        # only runs on Wednesdays
-        if now.weekday() == 2:
-            reminder_time = cst.localize(datetime.datetime(now.year, now.month, now.day, 20, 30))
-            meeting_time = cst.localize(datetime.datetime(now.year, now.month, now.day, 21, 0))
-            print("Reminder time: ", reminder_time)
-            print("Meeting time: ", meeting_time)
-            
-            if now >= meeting_time:
-                print("Sending meeting message...")
-                await meeting_message()
-            elif now >= reminder_time:
+        # Reset reminder_sent if it's a new day
+        if now.hour == 0 and now.minute == 0:
+            reminder_sent = False
+            meeting_sent = False
+
+        # only runs on Wednesdays and if reminder hasn't been sent for the day
+        if now.weekday() == 2 and not reminder_sent:
+            if now.hour == 20 and now.minute >= 30:
                 print("Sending meeting reminder...")
                 await meeting_reminder()
+                reminder_sent = True  # Set reminder_sent to True after sending reminder
+            elif now.hour == 21 and now.minute == 0:
+                print("Sending meeting message...")
+                await meeting_message()
+                meeting_sent = True  # Set meeting_sent to True after sending message
 
-        # Sleep for 1 hour before checking again
-        print("Sleeping for 25 minutes...")
-        await asyncio.sleep(900)  # 3600 seconds = 1 hour
+        # Sleep for 1 minute before checking again
+        print("Sleeping for 1 minute...")
+        await asyncio.sleep(60)  # 60 seconds = 1 minute
 
 @bot.event
 async def on_ready():
