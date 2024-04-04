@@ -3,6 +3,7 @@ import nextcord
 import os
 import datetime
 import asyncio
+import pytz
 
 bot = commands.Bot(command_prefix="dog ")
 
@@ -15,15 +16,16 @@ async def meeting_message():
     await channel.send("@here THE MEETING IS BEING HELD IN #MEETING!")
 
 async def check_time_and_send_messages():
+    cst = pytz.timezone('America/Chicago')  # Central Standard Time
     while True:
         print("Checking time...")
-        now = datetime.datetime.now()
+        now = datetime.datetime.now(cst)
         print("Current time:", now)
 
         # only runs on Wednesdays
         if now.weekday() == 2:
-            reminder_time = now.replace(hour=20, minute=30)
-            meeting_time = now.replace(hour=21, minute=00)
+            reminder_time = cst.localize(datetime.datetime(now.year, now.month, now.day, 20, 30))
+            meeting_time = cst.localize(datetime.datetime(now.year, now.month, now.day, 21, 0))
             print("Reminder time: ", reminder_time)
             print("Meeting time: ", meeting_time)
             
