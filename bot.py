@@ -13,10 +13,8 @@ async def meeting_message():
 	channel = bot.get_channel(1039284243697762467)
 
 	await channel.send("@here THE MEETING IS BEING HELD IN #MEETING!")
-		
-@bot.event
-async def on_ready():
-	print(f"Loggined in as: {bot.user.name}")
+
+async def check_time_and_send_messages():
 	now = datetime.datetime.now()
 
 	# only runs on wednesdays
@@ -32,6 +30,13 @@ async def on_ready():
 		await meeting_message()
 	else:
 		return
+	
+@bot.event
+async def on_ready():
+	print(f"Loggined in as: {bot.user.name}")
+
+	bot.loop.create_task(check_time_and_send_messages())
+	
 
 if __name__ == '__main__':
 	bot.run(os.environ["DISCORD_TOKEN"])
