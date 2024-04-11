@@ -31,7 +31,7 @@ async def check_time_and_send_messages():
         print("Current time (CST):", now)
 
         # Reset reminder_sent if it's a new day
-        if now.hour == 0 and now.minute == 0:
+        if now.hour >= 00 and now.minute >= 0:
             reminder_sent = False
             meeting_sent = False
 
