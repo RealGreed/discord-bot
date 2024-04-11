@@ -5,8 +5,14 @@ import datetime
 import asyncio
 import pytz
 
-bot = commands.Bot(command_prefix="dog ")
+bot = commands.Bot(command_prefix="bot ")
 
+async def respond_doc_call():
+    while True:
+        bot.add_listener('Meeting Logs')
+        channel = bot.get_channel(1040065014867968041)
+        await channel.send("https://docs.google.com/document/d/1DNqomQuh7jjDR28-u0PZR3kddp7T6bV8lLgn8Qho9_g/edit")
+        
 async def meeting_reminder():
     channel = bot.get_channel(1039284243697762467)
     await channel.send("@here MEETING IS IN 30 MINUTES!")
@@ -35,7 +41,7 @@ async def check_time_and_send_messages():
                 print("Sending meeting reminder...")
                 await meeting_reminder()
                 reminder_sent = True  # Set reminder_sent to True after sending reminder
-            elif now.hour == 21 and now.minute == 0:
+            elif now.hour == 21 and now.minute >= 00:
                 print("Sending meeting message...")
                 await meeting_message()
                 meeting_sent = True  # Set meeting_sent to True after sending message
