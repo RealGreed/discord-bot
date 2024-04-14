@@ -15,11 +15,11 @@ async def respond_doc_call():
         
 async def meeting_reminder():
     channel = bot.get_channel(1228883489638842419)
-    await channel.send("testingreminder")
+    await channel.send("@here MEETING IS IN 30 MINUTES!")
 
 async def meeting_message():
     channel = bot.get_channel(1228883489638842419)
-    await channel.send("testingmetting")
+    await channel.send("@here THE MEETING IS BEING HELD IN #MEETING!")
 
 async def check_time_and_send_messages():
     cst = pytz.timezone('America/Chicago')  # Central Standard Time
