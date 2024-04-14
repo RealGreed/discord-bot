@@ -37,7 +37,7 @@ async def check_time_and_send_messages():
 
         # only runs on Wednesdays and if reminder hasn't been sent for the day
         if (now.weekday() == 2 or now.weekday() == 6) and not reminder_sent:
-            if 21 >= now.hour <= 20 and 32 >= now.minute <= 30:
+            if now.hour >= 20 and now.minute >= 30:
                 print("Sending meeting reminder...")
                 await meeting_reminder()
                 reminder_sent = True  # Set reminder_sent to True after sending reminder
@@ -46,7 +46,7 @@ async def check_time_and_send_messages():
 
          # only runs on Wednesdays and Saturday if meeting has not been sent for the day
         if (now.weekday() == 2 or now.weekday() == 6) and not meeting_sent:
-            if 21 >= now.hour <= 20 and 32 >= now.minute <= 30:
+            if now.hour >= 21 and now.minute >= 00:
                 print("Sending meeting message...")
                 await meeting_message()
                 meeting_sent = True  # Set meeting_sent to True after sending message
