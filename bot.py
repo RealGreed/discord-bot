@@ -46,7 +46,7 @@ async def check_time_and_send_messages():
 
          # only runs on Wednesdays and Saturday if meeting has not been sent for the day
         if (now.weekday() == 2 or now.weekday() == 5) and not meeting_sent:
-            if now.hour >= 21 and 51 >= now.minute >= 52:
+            if now.hour >= 21 and 52 >= now.minute >= 51:
                 print("Sending meeting message...")
                 await meeting_message()
                 meeting_sent = True  # Set meeting_sent to True after sending message
