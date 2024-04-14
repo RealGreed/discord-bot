@@ -14,11 +14,11 @@ async def respond_doc_call():
         await channel.send("https://docs.google.com/document/d/1DNqomQuh7jjDR28-u0PZR3kddp7T6bV8lLgn8Qho9_g/edit")
         
 async def meeting_reminder():
-    channel = bot.get_channel(1039284243697762467)
+    channel = bot.get_channel(1228883489638842419)
     await channel.send("@here MEETING IS IN 30 MINUTES!")
 
 async def meeting_message():
-    channel = bot.get_channel(1039284243697762467)
+    channel = bot.get_channel(1228883489638842419)
     await channel.send("@here THE MEETING IS BEING HELD IN #MEETING!")
 
 async def check_time_and_send_messages():
