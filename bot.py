@@ -15,11 +15,11 @@ async def respond_doc_call():
         
 async def meeting_reminder():
     channel = bot.get_channel(1228883489638842419)
-    await channel.send("@here MEETING IS IN 30 MINUTES!")
+    await channel.send("testingreminder")
 
 async def meeting_message():
     channel = bot.get_channel(1228883489638842419)
-    await channel.send("@here THE MEETING IS BEING HELD IN #MEETING!")
+    await channel.send("testingmetting")
 
 async def check_time_and_send_messages():
     cst = pytz.timezone('America/Chicago')  # Central Standard Time
@@ -37,7 +37,7 @@ async def check_time_and_send_messages():
 
         # only runs on Wednesdays and if reminder hasn't been sent for the day
         if (now.weekday() == 2 or now.weekday() == 5) and not reminder_sent:
-            if now.hour >= 20 and now.minute >= 30:
+            if now.hour >= 20 and 31 >= now.minute >= 30:
                 print("Sending meeting reminder...")
                 await meeting_reminder()
                 reminder_sent = True  # Set reminder_sent to True after sending reminder
@@ -46,7 +46,7 @@ async def check_time_and_send_messages():
 
          # only runs on Wednesdays and Saturday if meeting has not been sent for the day
         if (now.weekday() == 2 or now.weekday() == 5) and not meeting_sent:
-            if now.hour >= 21 and now.minute >= 00:
+            if now.hour >= 21 and 1 >= now.minute >= 00:
                 print("Sending meeting message...")
                 await meeting_message()
                 meeting_sent = True  # Set meeting_sent to True after sending message
@@ -55,7 +55,7 @@ async def check_time_and_send_messages():
 
         # Sleep for 1 minute before checking again
         print("Sleeping for 15 minute...")
-        await asyncio.sleep(900)  # 60 seconds = 1 minute
+        await asyncio.sleep(1)  # 60 seconds = 1 minute
 
 @bot.event
 async def on_ready():
