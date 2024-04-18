@@ -41,8 +41,6 @@ async def check_time_and_send_messages():
                 print("Sending meeting reminder...")
                 await meeting_reminder()
                 reminder_sent = True  # Set reminder_sent to True after sending reminder
-        else:
-            reminder_sent = False
 
          # only runs on Wednesdays and Saturday if meeting has not been sent for the day
         if (now.weekday() == 2 or now.weekday() == 5) and not meeting_sent:
@@ -50,11 +48,9 @@ async def check_time_and_send_messages():
                 print("Sending meeting message...")
                 await meeting_message()
                 meeting_sent = True  # Set meeting_sent to True after sending message
-        else:
-            meeting_sent = False
 
         # Sleep for 1 minute before checking again
-        print("Sleeping for 30 minute...")
+        print("Sleeping for a minute...")
         await asyncio.sleep(60)  # 60 seconds = 1 minute
 
 @bot.event
