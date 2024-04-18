@@ -31,13 +31,13 @@ async def check_time_and_send_messages():
         print("Current time (CST):", now)
 
         # Reset reminder_sent if it's a new day
-        if 1 >=now.hour >= 00 and 2 >= now.minute >= 0:
+        if now.hour >= 00 and now.minute <= 1:
             reminder_sent = False
             meeting_sent = False
 
         # only runs on Wednesdays and if reminder hasn't been sent for the day
         if (now.weekday() == 2 or now.weekday() == 5) and not reminder_sent:
-            if 21 >= now.hour >= 20 and 31 >= now.minute >= 30:
+            if now.hour >= 20 and now.minute >= 30:
                 print("Sending meeting reminder...")
                 await meeting_reminder()
                 reminder_sent = True  # Set reminder_sent to True after sending reminder
@@ -46,7 +46,7 @@ async def check_time_and_send_messages():
 
          # only runs on Wednesdays and Saturday if meeting has not been sent for the day
         if (now.weekday() == 2 or now.weekday() == 5) and not meeting_sent:
-            if 22 >= now.hour >= 21 and 1 >= now.minute >= 0:
+            if now.hour >= 21 and now.minute >= 0:
                 print("Sending meeting message...")
                 await meeting_message()
                 meeting_sent = True  # Set meeting_sent to True after sending message
@@ -55,7 +55,7 @@ async def check_time_and_send_messages():
 
         # Sleep for 1 minute before checking again
         print("Sleeping for 30 minute...")
-        await asyncio.sleep(1800)  # 60 seconds = 1 minute
+        await asyncio.sleep(60)  # 60 seconds = 1 minute
 
 @bot.event
 async def on_ready():
