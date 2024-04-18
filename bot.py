@@ -60,7 +60,7 @@ async def on_ready():
     # Start the loop to check time and send messages
     reminder_sent = False
     meeting_sent = False
-    bot.loop.create_task(check_time_and_send_messages())
+    bot.loop.create_task(check_time_and_send_messages(reminder_sent, meeting_sent))
 
 if __name__ == '__main__':
     bot.run(os.environ["DISCORD_TOKEN"])
