@@ -8,7 +8,7 @@ import discord
 import openai
 
 bot = commands.Bot(command_prefix="bot ")
-openai.api_key = os.environ('AI_TOKEN')
+openai.api_key = os.environ['AI_TOKEN']
 
 intents = discord.Intents.default()
 intents.messages = True
@@ -29,10 +29,6 @@ def is_message_appropriate(message):
     )
     result = response.choices[0].message['content'].strip().lower()
     return "appropriate" in result
-
-@client.event
-async def on_ready():
-    print(f'We have logged in as {client.user}')
 
 @client.event
 async def on_message(message):
@@ -101,4 +97,4 @@ async def on_ready():
 
 if __name__ == '__main__':
     bot.run(os.environ["DISCORD_TOKEN"])
-
+    client.run(os.environ["DISCORD_TOKEN"])
