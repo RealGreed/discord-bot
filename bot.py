@@ -4,8 +4,47 @@ import os
 import datetime
 import asyncio
 import pytz
+import discord
+import openai
 
 bot = commands.Bot(command_prefix="bot ")
+openai.api_key = os.environ('AI_TOKEN')
+
+intents = discord.Intents.default()
+intents.messages = True
+intents.message_content = True
+client = discord.Client(intents=intents)
+
+def is_message_appropriate(message):
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo-0301",
+        messages=[
+            {"role": "system", "content": "You are a moderation assistant. Classify the following message as appropriate or inappropriate."},
+            {"role": "user", "content": f"Message: '{message}'"}
+        ],
+        max_tokens=10,
+        n=1,
+        stop=None,
+        temperature=0.5,
+    )
+    result = response.choices[0].message['content'].strip().lower()
+    return "appropriate" in result
+
+@client.event
+async def on_ready():
+    print(f'We have logged in as {client.user}')
+
+@client.event
+async def on_message(message):
+    # Don't let the bot respond to its own messages
+    if message.author == client.user:
+        return
+
+    # Check if the message is appropriate
+    if not is_message_appropriate(message.content):
+        await message.channel.send(f"{message.author.mention}, you have been banned for inappropriate language.")
+        await message.author.ban(reason="Inappropriate language")
+        return
 
 async def respond_doc_call():
     while True:
