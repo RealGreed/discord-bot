@@ -39,18 +39,18 @@ async def on_message(message):
     # Don't let the bot respond to its own messages
     if message.author == bot.user:
         return
-
-    # Check if the message is appropriate
-    if not is_message_appropriate(message.content):
-        await message.channel.send(f"{message.author.mention}, you have been banned for inappropriate language.")
-        await message.author.ban(reason="Inappropriate language")
-        return
     
     # Check for keywords and respond with links
     for keyword, link in keyword_links.items():
         if keyword.lower() in message.content.lower():
             await message.channel.send(f"{message.author.mention}, you mentioned '{keyword}'. Here is a reference link: {link}")
             break  # Optionally, stop checking after the first match
+
+    # Check if the message is appropriate
+    if not is_message_appropriate(message.content):
+        await message.channel.send(f"{message.author.mention}, you have been banned for inappropriate language.")
+        await message.author.ban(reason="Inappropriate language")
+        return
         
 async def meeting_reminder():
     channel = bot.get_channel(1228883489638842419)
