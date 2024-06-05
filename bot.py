@@ -61,7 +61,7 @@ async def meeting_message():
     await channel.send("@here THE MEETING IS BEING HELD IN #MEETING!")
 
 @tasks.loop(minutes=1)
-async def check_time_and_send_messages(reminder_sent, meeting_sent):
+async def check_time_and_send_messages():
     cst = pytz.timezone('America/Chicago')
     now = datetime.datetime.now(cst)
 
