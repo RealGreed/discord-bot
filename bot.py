@@ -20,19 +20,23 @@ keyword_links = {
 }
 
 def is_message_appropriate(message):
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo-0301",
-        messages=[
-            {"role": "system", "content": "You are a moderation assistant. Classify the following message as appropriate or inappropriate."},
-            {"role": "user", "content": f"Message: '{message}'"}
-        ],
-        max_tokens=10,
-        n=1,
-        stop=None,
-        temperature=0.5,
-    )
-    result = response.choices[0].message['content'].strip().lower()
-    return "appropriate" in result
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo-0301",
+            messages=[
+                {"role": "system", "content": "You are a moderation assistant. Classify the following message as appropriate or inappropriate."},
+                {"role": "user", "content": f"Message: '{message}'"}
+            ],
+            max_tokens=10,
+            n=1,
+            stop=None,
+            temperature=0.5,
+        )
+        result = response.choices[0].message['content'].strip().lower()
+        return "appropriate" in result
+    except Exception as e:
+        print(f"Error checking message appropriateness: {e}")
+        return True  # Default to appropriate if there's an error
 
 @bot.event
 async def on_message(message):
