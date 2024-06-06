@@ -48,8 +48,8 @@ async def on_message(message):
 
     # Check if the message is appropriate
     if not is_message_appropriate(message.content):
-        await message.channel.send(f"{message.author.mention}, you have been banned for inappropriate language.")
-        await message.author.ban(reason="Inappropriate language")
+        await message.channel.send(f"{message.author.mention}, you have been kicked for inappropriate language.")
+        # await message.author.kick(reason="Inappropriate language")
         return
         
 async def meeting_reminder():
