@@ -19,25 +19,6 @@ keyword_links = {
     "divinelore": "https://docs.google.com/document/d/1RbRWpLsR42dbJecnHyU23-jhRHlcHaXBTMTlTYiIVZk/edit#heading=h.37vf2hug3krk",
 }
 
-def is_message_appropriate(message):
-    try:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-0301",
-            messages=[
-                {"role": "system", "content": "You are a moderation assistant. Classify the following message as appropriate or inappropriate."},
-                {"role": "user", "content": f"Message: '{message}'"}
-            ],
-            max_tokens=10,
-            n=1,
-            stop=None,
-            temperature=0.5,
-        )
-        result = response.choices[0].message['content'].strip().lower()
-        return "appropriate" in result
-    except Exception as e:
-        print(f"Error checking message appropriateness: {e}")
-        return True  # Default to appropriate if there's an error
-
 @bot.event
 async def on_message(message):
     # Don't let the bot respond to its own messages
@@ -49,12 +30,6 @@ async def on_message(message):
         if keyword.lower() in message.content.lower():
             await message.channel.send(f"{message.author.mention}, you mentioned '{keyword}'. Here is a reference link: {link}")
             break  # Optionally, stop checking after the first match
-
-    # Check if the message is appropriate
-    if not is_message_appropriate(message.content):
-        await message.channel.send(f"{message.author.mention}, you have been kicked for inappropriate language.")
-        # await message.author.kick(reason="Inappropriate language")
-        return
         
 async def meeting_reminder():
     channel = bot.get_channel(1228883489638842419)
