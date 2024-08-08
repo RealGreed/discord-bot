@@ -8,16 +8,66 @@ import openai
 
 openai.api_key = os.environ['AI_TOKEN']
 
+meeting_channel = 1228883489638842419
 intents = nextcord.Intents.default()
 intents.messages = True
 intents.message_content = True
 
-bot = commands.Bot(command_prefix="bot ", intents=intents)
+bot = commands.Bot(command_prefix="/ ", intents=intents)
 
 keyword_links = {
     "gamelore": "https://docs.google.com/document/d/1zqPAb4B5TxwWmvUGShKRrLluRE0_QnxEcWS-DzziW4E/edit#heading=h.gt93xjnmmbz",
     "divinelore": "https://docs.google.com/document/d/1RbRWpLsR42dbJecnHyU23-jhRHlcHaXBTMTlTYiIVZk/edit#heading=h.37vf2hug3krk",
 }
+
+# tasks
+tasks = []
+completed_tasks =[]
+
+@bot.command
+async def add(ctx, *, task:str):
+    # Adds the task to the list
+    task.append(task)
+    await display_tasks(ctx)
+
+@bot.command
+async def completed(ctx, *, task:str):
+    # mark as completed
+    if task in tasks:
+        tasks.remove(task)
+        completed_tasks.append(task)
+        await display_tasks(ctx)
+    else:
+        await ctx.send(f'Task "{task}" not found in the list.')
+
+@bot.command
+async def show(ctx):
+    "Show completed list"
+    if completed_tasks:
+        completed_message = "Completed Tasks:\n" + "\n".join(completed_tasks)
+    else:
+        completed_message = "No completed tasks yet."
+    await ctx.send(completed_message)
+
+@bot.command()
+async def delete(ctx, *, task:str):
+    if task in tasks:
+        tasks.remove(task)
+        await display_tasks(ctx)
+        await ctx.send(f'Task"{task}" deleted from the current tasks list.')
+    elif task in completed_tasks:
+        completed_tasks.remove(task)
+        await ctx.send(f'Task"{task} deleted from the completed tasks lsit.')
+    else:
+        await ctx.send(f'Task"{task}" not found in either the current or completed tasks list.')
+        
+async def display_tasks(ctx):
+    """Displays the current lists of tasks"""
+    if tasks:
+        task_message = "Current Tasks:\n" + "\n".join(tasks)
+    else:
+        task_message = "No tasks in the list."
+    await ctx.send(task_message)
 
 @bot.event
 async def on_message(message):
@@ -32,13 +82,14 @@ async def on_message(message):
             break  # Optionally, stop checking after the first match
         
 async def meeting_reminder():
-    channel = bot.get_channel(1228883489638842419)
+    channel = bot.get_channel(meeting_channel)
     await channel.send("@here MEETING IS IN 30 MINUTES!")
 
 async def meeting_message():
-    channel = bot.get_channel(1228883489638842419)
+    channel = bot.get_channel(meeting_channel)
     await channel.send("@here THE MEETING IS BEING HELD IN #MEETING!")
 
+# Handles meeting reminders
 @tasks.loop(minutes=1)
 async def check_time_and_send_messages():
     cst = pytz.timezone('America/Chicago')
