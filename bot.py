@@ -13,7 +13,7 @@ intents = nextcord.Intents.default()
 intents.messages = True
 intents.message_content = True
 
-bot = commands.Bot(command_prefix="/ ", intents=intents)
+bot = commands.Bot(command_prefix=". ", intents=intents)
 
 keyword_links = {
     "gamelore": "https://docs.google.com/document/d/1zqPAb4B5TxwWmvUGShKRrLluRE0_QnxEcWS-DzziW4E/edit#heading=h.gt93xjnmmbz",
