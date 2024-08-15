@@ -49,7 +49,7 @@ async def show(ctx):
         completed_message = "No completed tasks yet."
     await ctx.send(completed_message)
 
-@bot.command()
+@bot.command
 async def delete(ctx, *, task:str):
     if task in items:
         items.remove(task)
