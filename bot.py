@@ -21,50 +21,50 @@ keyword_links = {
 }
 
 # tasks
-tasks = []
-completed_tasks =[]
+items = []
+completed_items =[]
 
 @bot.command
 async def add(ctx, *, task:str):
     # Adds the task to the list
     task.append(task)
-    await display_tasks(ctx)
+    await display_items(ctx)
 
 @bot.command
 async def completed(ctx, *, task:str):
     # mark as completed
-    if task in tasks:
-        tasks.remove(task)
-        completed_tasks.append(task)
-        await display_tasks(ctx)
+    if task in items:
+        items.remove(task)
+        completed_items.append(task)
+        await display_items(ctx)
     else:
         await ctx.send(f'Task "{task}" not found in the list.')
 
 @bot.command
 async def show(ctx):
     "Show completed list"
-    if completed_tasks:
-        completed_message = "Completed Tasks:\n" + "\n".join(completed_tasks)
+    if completed_items:
+        completed_message = "Completed Tasks:\n" + "\n".join(completed_items)
     else:
         completed_message = "No completed tasks yet."
     await ctx.send(completed_message)
 
 @bot.command()
 async def delete(ctx, *, task:str):
-    if task in tasks:
-        tasks.remove(task)
-        await display_tasks(ctx)
+    if task in items:
+        items.remove(task)
+        await display_items(ctx)
         await ctx.send(f'Task"{task}" deleted from the current tasks list.')
-    elif task in completed_tasks:
-        completed_tasks.remove(task)
+    elif task in completed_items:
+        completed_items.remove(task)
         await ctx.send(f'Task"{task} deleted from the completed tasks lsit.')
     else:
         await ctx.send(f'Task"{task}" not found in either the current or completed tasks list.')
         
-async def display_tasks(ctx):
+async def display_items(ctx):
     """Displays the current lists of tasks"""
-    if tasks:
-        task_message = "Current Tasks:\n" + "\n".join(tasks)
+    if items:
+        task_message = "Current Tasks:\n" + "\n".join(items)
     else:
         task_message = "No tasks in the list."
     await ctx.send(task_message)
